@@ -8,7 +8,7 @@ class ProductRepository:
     def findAll(self) -> Product:
         return sendRequestDataBase(f"SELECT * FROM test")
 
-    
+
 
 
 
