@@ -10,11 +10,11 @@ import tensorflow as tf
 from helpers.plotsHelper import plot_history, visualize_CNN_model
 from helpers.tfHelpers import setLimitGPU
 
-train_path = '../modelData/data/train'
-valid_path = '../modelData/data/test'
-test_path = '../modelData/data/testimage'
-cats_path = '../modelData/data/cats'
-path_model = '../modelData/resultModelCNN/'
+train_path = '../modelDataCNN/data/train'
+valid_path = '../modelDataCNN/data/test'
+test_path = '../modelDataCNN/data/testimage'
+cats_path = '../modelDataCNN/data/cats'
+path_model = '../modelDataCNN/resultModelCNN/'
 name_saved_model = 'saved_model.h5'
 
 

@@ -23,7 +23,7 @@ def iterator():
     a += 1
 
 
-pathModel = os.path.dirname(__file__) + '..\\..\\/modelData/resultModelCNN/saved_model.h5'
+pathModel = os.path.dirname(__file__) + '..\\..\\/modelDataCNN/resultModelCNN/saved_model.h5'
 
 
 class MainWindow(QMainWindow):

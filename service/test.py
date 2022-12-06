@@ -12,13 +12,13 @@ from helpers.plotsHelper import visualize_CNN_model
 
 import imageService
 
-path = '../modelData/data/testimage/banana/img_1.png'
+path = '../modelDataCNN/data/testimage/banana/img_1.png'
 
 
 
 model = 0
 
-pathmodel = os.path.dirname(__file__) + '..\\..\\modelData\\resultModelCNN\\saved_model.h5'
+pathmodel = os.path.dirname(__file__) + '..\\..\\modelDataCNN\\resultModelCNN\\saved_model.h5'
 
 if __name__ == '__main__':
 

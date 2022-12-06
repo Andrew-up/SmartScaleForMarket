@@ -21,7 +21,7 @@ def imageToArray(image):
 
 
 def getRandomImage():
-    firstpath = os.path.dirname(__file__) +'\\..\\modelData/data/testimage/'
+    firstpath = os.path.dirname(__file__) +'\\..\\modelDataCNN/data/testimage/'
     # print(os.listdir(firstpath))
     twopatch = firstpath + '/' + os.path.join(random.choice(os.listdir(firstpath))) + '/'
     imagePath = os.path.join(twopatch, random.choice(os.listdir(twopatch)))

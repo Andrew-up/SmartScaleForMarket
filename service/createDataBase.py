@@ -17,6 +17,7 @@ createTableQuery = f"""
         )
 """
 
+
 # def findItemByName(productName):
 #     if testConnect() == 0:
 #         db = sqlite3.connect(pathDB)
@@ -27,6 +28,19 @@ createTableQuery = f"""
 #         cursor.close()
 #         db.close()
 #         return record
+
+def sendRequestDataBase(request):
+    if testConnect() == 0:
+        db = sqlite3.connect(pathDB)
+        cursor = db.cursor()
+        cursor.execute(request)
+        record = cursor.fetchall()
+        cursor.close()
+        db.close()
+        return record
+    else:
+        print("что то пошло не так при получении")
+
 
 def findAllByTest():
     if testConnect() == 0:
