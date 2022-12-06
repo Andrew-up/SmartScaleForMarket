@@ -47,9 +47,6 @@ def build_image_generator():
                                                 batch_size=batch_size,
                                                 seed=123,
                                                 image_size=(img_height, img_width))
-
-    # len_train_dataset = len(np.concatenate([i for x, i in train_dataset], axis=0))
-
     data_augmentation = tf.keras.Sequential([
         # layers.RandomFlip("horizontal"),
         layers.RandomRotation(0.3),
@@ -58,32 +55,6 @@ def build_image_generator():
         layers.Resizing(img_height, img_width),
 
     ])
-
-    # data_iterator = train_dataset.as_numpy_iterator()
-    # batch = data_iterator.next()
-    # print(batch[0])
-    # one_images_batch = 0
-    # for batch_x, batch_y in train_dataset:
-    #     one_images_batch = batch_x[0].numpy().astype("uint8")
-    #
-    # plt.imshow(one_images_batch)
-    # plt.show()
-
-    # print(one_images_batch)
-
-    # plt.figure(figsize=(10, 10))
-    # plt.imshow(batch[0].numpy().astype("uint8"))
-    # plt.imshow(images2[0].numpy().astype("uint8"))
-    # plt.show()
-
-    class_names = train_dataset.class_names
-    # plt.figure(figsize=(10, 10))
-    # for images, labels in train_dataset.take(1):
-    #     for i in range(len_train_dataset):
-    #         ax = plt.subplot(6, 6, i + 1)
-    #         plt.imshow(data_augmentation(images[i].numpy().astype("uint8")))
-    #         plt.title(class_names[np.argmax(labels[i])])
-    #         plt.axis("off")
 
     model = Sequential()
     model.add(data_augmentation)
