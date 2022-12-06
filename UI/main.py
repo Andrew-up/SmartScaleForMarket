@@ -10,9 +10,10 @@ from PySide6.QtCore import QSize, QThread, Signal, Slot, Qt, QRect
 from PySide6.QtGui import QImage, QPixmap, QFont
 from UI.qt_ui.ui_mainwindow2 import Ui_MainWindow
 
-import service.createDataBase as db
+# import service.productService as db
 import cv2
 
+# from repository.productRepository import find_all
 from service import imageService
 
 a = 0
@@ -79,7 +80,7 @@ class MainWindow(QMainWindow):
             self.ui.gridLayout.itemAt(i).widget().deleteLater()
 
     def getAllProduct(self):
-        result = db.findAllByTest()
+        result = find_all()
         for row in result:
             iterator()
             self.counter_id += 1
@@ -91,8 +92,8 @@ class MainWindow(QMainWindow):
 
     def addProduct(self):
         text = self.ui.lineEdit.text()
-        record = db.insertRequest(text)
-        print("добавлена новая запись, id: " + str(record))
+        # record = db.insertRequest(text)
+        # print("добавлена новая запись, id: " + str(record))
         # iterator()
 
     def print_this(self):

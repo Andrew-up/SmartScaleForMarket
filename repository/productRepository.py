@@ -1,14 +1,23 @@
+from typing import List
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from model.product import Product
-from service.createDataBase import sendRequestDataBase
+
+engine = create_engine("sqlite:///../data_base/db.db", echo=True)
 
 
 class ProductRepository:
-    model = Product
 
-    def findAll(self) -> Product:
-        return sendRequestDataBase(f"SELECT * FROM test")
+    def find_all(self) -> list[Product]:
+        sessions = sessionmaker(bind=engine)
+        s = sessions()
+        return s.session.query(Product).all()
 
+    # def __init__(self, session):
+    #     self.session = session
 
+    pass
 
-
-
+    # def find_product_by_id(self, id_product: int) -> Product:
+    #     return self.session.query(Product)
