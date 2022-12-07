@@ -4,26 +4,19 @@ from keras.models import Sequential, Model
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Dropout, Flatten, Dense
 from keras import layers
-
+import os
 import numpy as np
 import tensorflow as tf
 from helpers.plotsHelper import plot_history, visualize_CNN_model
 from helpers.tfHelpers import setLimitGPU
-
-train_path = '../modelDataCNN/data/train'
-valid_path = '../modelDataCNN/data/test'
-test_path = '../modelDataCNN/data/testimage'
-cats_path = '../modelDataCNN/data/cats'
-path_model = '../modelDataCNN/resultModelCNN/'
-name_saved_model = 'saved_model.h5'
-
+from definitions import TRAIN_PATH, TEST_PATH, MODEL_CNN_PATH
 
 def build_image_generator():
     batch_size = 32
     img_height = 224
     img_width = 224
 
-    train_dataset = image_dataset_from_directory(train_path,
+    train_dataset = image_dataset_from_directory(TRAIN_PATH,
                                                  labels='inferred',
                                                  label_mode='categorical',
                                                  subset='training',
@@ -32,7 +25,7 @@ def build_image_generator():
                                                  seed=123,
                                                  image_size=(img_height, img_width))
 
-    validation_dataset = image_dataset_from_directory(train_path,
+    validation_dataset = image_dataset_from_directory(TRAIN_PATH,
                                                       labels='inferred',
                                                       label_mode='categorical',
                                                       subset='validation',
@@ -41,14 +34,14 @@ def build_image_generator():
                                                       seed=123,
                                                       image_size=(img_height, img_width))
 
-    test_dataset = image_dataset_from_directory(test_path,
+    test_dataset = image_dataset_from_directory(TEST_PATH,
                                                 labels='inferred',
                                                 label_mode='categorical',
                                                 batch_size=batch_size,
                                                 seed=123,
                                                 image_size=(img_height, img_width))
     data_augmentation = tf.keras.Sequential([
-        # layers.RandomFlip("horizontal"),
+        layers.RandomFlip("horizontal"),
         layers.RandomRotation(0.3),
         layers.RandomContrast(factor=0.2),
         layers.Rescaling(1. / 255),
@@ -76,11 +69,11 @@ def build_image_generator():
 
     callback_val_loss = tf.keras.callbacks.EarlyStopping(monitor="val_loss",
                                                          mode="auto",
-                                                         patience=7)
+                                                         patience=10)
 
     callback_val_accuracy = tf.keras.callbacks.EarlyStopping(monitor="val_accuracy",
                                                              mode="auto",
-                                                             patience=7)
+                                                             patience=10)
 
     history = model.fit(train_dataset,
                         batch_size=32,
@@ -93,7 +86,7 @@ def build_image_generator():
     plot_history(history)
     print(model.summary())
 
-    model.save(path_model + name_saved_model)
+    model.save(MODEL_CNN_PATH)
 
     # visualize_CNN_model(6, path_model + name_saved_model, class_names, train_dataset)
 
@@ -106,6 +99,7 @@ def build_image_generator():
 def main():
     setLimitGPU(1024)
     model = build_image_generator()
+
 
 
 if __name__ == '__main__':

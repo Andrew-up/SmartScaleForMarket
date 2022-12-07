@@ -9,11 +9,9 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
 from PySide6.QtCore import QSize, QThread, Signal, Slot, Qt, QRect
 from PySide6.QtGui import QImage, QPixmap, QFont
 from UI.qt_ui.ui_mainwindow2 import Ui_MainWindow
-
-# import service.productService as db
+from definitions import MODEL_CNN_PATH, TEST_PATH
+from service.productService import findAll, addProduct
 import cv2
-
-# from repository.productRepository import find_all
 from service import imageService
 
 a = 0
@@ -23,15 +21,11 @@ def iterator():
     global a
     a += 1
 
-
-pathModel = os.path.dirname(__file__) + '..\\..\\/modelDataCNN/resultModelCNN/saved_model.h5'
-
-
 class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        imageService.loadModel(pathModel)
+        imageService.loadModel(MODEL_CNN_PATH)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         # self.ui.gridLayout.setColumnStretch(3, 0)
@@ -80,21 +74,22 @@ class MainWindow(QMainWindow):
             self.ui.gridLayout.itemAt(i).widget().deleteLater()
 
     def getAllProduct(self):
-        result = find_all()
+        result = findAll()
         for row in result:
             iterator()
+            print(row.id_Product)
             self.counter_id += 1
             button = QPushButton()
-            button.setText(str(row[0]) + " " + row[1])
+            button.setText(row.name_Product)
             button.setFixedSize(QSize(75, 75))
             button.clicked.connect(self.print_this)
             self.ui.gridLayout.addWidget(button)
 
     def addProduct(self):
         text = self.ui.lineEdit.text()
-        # record = db.insertRequest(text)
-        # print("добавлена новая запись, id: " + str(record))
-        # iterator()
+        record = addProduct(text)
+        print("добавлена новая запись, id: " + str(record))
+        iterator()
 
     def print_this(self):
         sender = self.sender()

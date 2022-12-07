@@ -1,23 +1,24 @@
-from typing import List
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from model.product import Product
+from repository.abstractRepository import AbstractRepository
 
-engine = create_engine("sqlite:///../data_base/db.db", echo=True)
 
+class ProductRepository(AbstractRepository):
 
-class ProductRepository:
+    def get(self, id_item) -> Product:
+        return self.session.query(Product).first()
+
+    def add(self, data: Product) -> Product.id_Product:
+        self.session.add(data)
+        self.session.commit()
+        # self.session.flush()
+        return data.id_Product
 
     def find_all(self) -> list[Product]:
-        sessions = sessionmaker(bind=engine)
-        s = sessions()
-        return s.session.query(Product).all()
+        return self.session.query(Product).all()
 
-    # def __init__(self, session):
-    #     self.session = session
-
-    pass
-
-    # def find_product_by_id(self, id_product: int) -> Product:
-    #     return self.session.query(Product)
+    def delete_all(self) -> str:
+        self.session.query(Product).delete()
+        self.session.commit()
+        return "База очищена"
+    def __init__(self, session):
+        self.session = session

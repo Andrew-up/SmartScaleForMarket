@@ -6,7 +6,7 @@ from keras.utils import load_img, img_to_array
 import tensorflow as tf
 import numpy as np
 from heapq import nlargest
-
+from definitions import TEST_PATH
 model = 0
 
 categories = {
@@ -21,9 +21,9 @@ def imageToArray(image):
 
 
 def getRandomImage():
-    firstpath = os.path.dirname(__file__) +'\\..\\modelDataCNN/data/testimage/'
+    # firstpath = os.path.dirname(__file__) +'\\..\\modelDataCNN/data/testimage/'
     # print(os.listdir(firstpath))
-    twopatch = firstpath + '/' + os.path.join(random.choice(os.listdir(firstpath))) + '/'
+    twopatch = TEST_PATH + '/' + os.path.join(random.choice(os.listdir(TEST_PATH))) + '/'
     imagePath = os.path.join(twopatch, random.choice(os.listdir(twopatch)))
     return imagePath
 

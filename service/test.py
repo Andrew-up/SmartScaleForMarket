@@ -14,8 +14,6 @@ import imageService
 
 path = '../modelDataCNN/data/testimage/banana/img_1.png'
 
-
-
 model = 0
 
 pathmodel = os.path.dirname(__file__) + '..\\..\\modelDataCNN\\resultModelCNN\\saved_model.h5'
