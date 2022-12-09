@@ -8,22 +8,22 @@ from keras.utils import img_to_array
 
 
 def plot_images(images, labels=None, class_names=None, one_hot_label=False):
-    num_images = len(images)
-    num_cols = 8
-    num_rows = math.ceil(num_images / num_cols)
-    plt.figure(figsize=(num_cols * 2, num_rows * 2))
-    for i, image in enumerate(images):
-        plt.subplot(num_rows, num_cols, i + 1)
-        plt.imshow(image)
-        if labels is not None:
-            label = labels[i]
-            if one_hot_label:
-                label = np.argmax(label)
-            if class_names is not None:
-                label = class_names[label]
-            plt.title(label)
-        plt.axis('off')
-    plt.show()
+        num_images = len(images)
+        num_cols = 8
+        num_rows = math.ceil(num_images / num_cols)
+        plt.figure(figsize=(num_cols * 2, num_rows * 2))
+        for i, image in enumerate(images):
+            plt.subplot(num_rows, num_cols, i + 1)
+            plt.imshow(image)
+            if labels is not None:
+                label = labels[i]
+                if one_hot_label:
+                    label = np.argmax(label)
+                if class_names is not None:
+                    label = class_names[label]
+                plt.title(label)
+            plt.axis('off')
+        plt.show()
 
 
 def plot_history(history, metrics=None, start=0):
