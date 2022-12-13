@@ -1,18 +1,15 @@
-import os
-import random
 import sys
 
-import cv2
-import time
-from PySide6 import QtCore
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
-from PySide6.QtCore import QSize, QThread, Signal, Slot, Qt, QRect
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
+from PySide6.QtCore import QSize, QRect
 from PySide6.QtGui import QImage, QPixmap, QFont
-from UI.qt_ui.ui_mainwindow2 import Ui_MainWindow
-from definitions import MODEL_CNN_PATH, TEST_PATH
-from service.productService import findAll, addProduct
+from frontend.view.qt_ui.ui_mainwindow2 import Ui_MainWindow
+from definitions import MODEL_CNN_PATH
 import cv2
-from service import imageService
+from backend.service import imageService
+from frontend.controller.productController import ProductController
+from frontend.model.product import Product
+
 
 a = 0
 
@@ -20,6 +17,11 @@ a = 0
 def iterator():
     global a
     a += 1
+
+
+def show_test():
+    print("Test123")
+
 
 class MainWindow(QMainWindow):
 
@@ -36,6 +38,15 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_3.clicked.connect(self.clear)
         self.ui.pushButton_4.setText("Случайная\nкартинка")
         self.ui.pushButton_4.clicked.connect(self.randomImage)
+        self.ui.pushButton_5.setText("Очистить базу")
+        self.ui.pushButton_5.clicked.connect(self.clearDataBase)
+
+
+    def clearDataBase(self):
+        p = ProductController(Product(), self)
+        print(p.clear_all_data_base())
+        pass
+
 
     def randomImage(self):
 
@@ -74,8 +85,12 @@ class MainWindow(QMainWindow):
             self.ui.gridLayout.itemAt(i).widget().deleteLater()
 
     def getAllProduct(self):
-        result = findAll()
-        for row in result:
+        p = ProductController(Product(), self)
+        # print(p.get_all_products())
+
+        # print(p.model)
+        # result = findAll()
+        for row in p.all_products():
             iterator()
             print(row.id_Product)
             self.counter_id += 1
@@ -86,10 +101,12 @@ class MainWindow(QMainWindow):
             self.ui.gridLayout.addWidget(button)
 
     def addProduct(self):
+        p = ProductController(Product, self)
         text = self.ui.lineEdit.text()
-        record = addProduct(text)
-        print("добавлена новая запись, id: " + str(record))
-        iterator()
+        print(p.new_product(text))
+        # record = addProduct(text)
+        # print("добавлена новая запись, id: " + str(record))
+        # iterator()
 
     def print_this(self):
         sender = self.sender()

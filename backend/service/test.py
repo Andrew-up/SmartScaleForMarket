@@ -1,18 +1,8 @@
 import os
 
-from keras.backend import expand_dims
-from keras.models import load_model
-import matplotlib.pyplot as plt
-import numpy as np
-import cv2 as cv2
-import keras.utils
-import tensorflow as tf
-from tensorflow.python.ops import nn
-from helpers.plotsHelper import visualize_CNN_model
-
 import imageService
 
-path = '../modelDataCNN/data/testimage/banana/img_1.png'
+path = '../models_cnn/data/testimage/banana/img_1.png'
 
 model = 0
 

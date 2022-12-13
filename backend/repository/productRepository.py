@@ -1,5 +1,5 @@
-from model.product import Product
-from repository.abstractRepository import AbstractRepository
+from backend.model.product import Product
+from backend.repository.abstractRepository import AbstractRepository
 
 
 class ProductRepository(AbstractRepository):
@@ -20,5 +20,6 @@ class ProductRepository(AbstractRepository):
         self.session.query(Product).delete()
         self.session.commit()
         return "База очищена"
+
     def __init__(self, session):
         self.session = session

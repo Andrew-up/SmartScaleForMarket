@@ -1,21 +1,19 @@
 import keras.optimizers
 from keras.utils import image_dataset_from_directory
-from keras.models import Sequential, Model
+from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Dropout, Flatten, Dense
 from keras import layers
-import os
 import numpy as np
 import tensorflow as tf
-from matplotlib import pyplot as plt
 
-from helpers.plotsHelper import plot_history, visualize_CNN_model, plot_images
-from helpers.tfHelpers import setLimitGPU
+from backend.helpers.plotsHelper import plot_history
+from backend.helpers.tfHelpers import setLimitGPU
 from definitions import TRAIN_PATH, TEST_PATH, MODEL_CNN_PATH
 
-from keras.utils import img_to_array
+
 def build_image_generator():
-    batch_size = 32
+    batch_size = 8
     img_height = 224
     img_width = 224
 

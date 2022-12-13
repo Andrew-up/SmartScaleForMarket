@@ -1,8 +1,8 @@
 # from repository.productRepository import ProductRepository
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from repository import productRepository
-from model.product import Product, Base
+from backend.repository import productRepository
+from backend.model.product import Product
 from definitions import DATABASE_DIR
 # from repository.productRepository import ProductRepository
 engine = create_engine(f"sqlite:///{DATABASE_DIR}")
@@ -17,16 +17,16 @@ def getById(idProduct):
     return item
 
 
-def addProduct(item_name: str):
+def addProduct(product_name: str):
     session = get_session()
     repo = productRepository.ProductRepository(session)
-    new_prod = Product(name_Product=item_name)
+    new_prod = Product(name_Product=product_name)
     new_item = repo.add(new_prod)
     session.close()
     return new_item
 
 
-def findAll():
+def findAll() -> list[Product]:
     session = get_session()
     repo = productRepository.ProductRepository(session)
     all_prod = repo.find_all()
