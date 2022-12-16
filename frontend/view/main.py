@@ -3,7 +3,7 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
 from PySide6.QtCore import QSize, QRect
 from PySide6.QtGui import QImage, QPixmap, QFont
-from frontend.view.qt_ui.ui_mainwindow2 import Ui_MainWindow
+from frontend.view.qt_ui.old.ui_mainwindow2 import Ui_MainWindow
 from definitions import MODEL_CNN_PATH
 import cv2
 from backend.service import imageService

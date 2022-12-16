@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>168</width>
+    <height>168</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QWidget" name="item_widget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>150</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>150</width>
+       <height>150</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QObject#item_widget
+{
+   background-color: white;
+   color: black;
+   border: 2px solid black ; /* Black */
+	text-align: center;
+   border-radius:  10px;
+	font-size: 20pt;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+QObject#item_widget:hover
+{
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  background-color: #e3e3e3;
+}
+</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="styleSheet">
+         <string notr="true">height :80%;
+background-color: rgb(208, 208, 208);
+border: 2px solid black ; /* Black */
+border-radius:  10px;
+font-size: 20px;</string>
+        </property>
+        <property name="text">
+         <string>IMAGE</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="styleSheet">
+         <string notr="true">max-height :40%;
+border: 2px solid black ; /* Black */
+border-radius:  10px;
+font-size: 12px;
+font-weight: bold;</string>
+        </property>
+        <property name="text">
+         <string>NAME PRODUCT </string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

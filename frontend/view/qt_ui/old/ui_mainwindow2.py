@@ -78,7 +78,7 @@ class Ui_MainWindow(object):
         self.pushButton_5.setGeometry(QRect(260, 490, 81, 41))
         self.textProduct = QLabel(self.centralwidget)
         self.textProduct.setObjectName(u"textProduct")
-        self.textProduct.setGeometry(QRect(760, 100, 450, 91))
+        self.textProduct.setGeometry(QRect(760, 60, 301, 51))
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(770, 230, 49, 16))
