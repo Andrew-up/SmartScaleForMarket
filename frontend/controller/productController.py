@@ -18,6 +18,12 @@ class ProductController(object):
     def clear_all_data_base(self):
         return self.model.clear_base()
 
+    def edit_product(self, id_product: int, new_Product: Product):
+        return self.model.edit_product_by_id(id_product=id_product, new_Product=new_Product)
+
+    def get_Product_by_id(self, id_product: int):
+        return self.model.get_product_by_id(id_product)
+
 
 if __name__ == '__main__':
     pass

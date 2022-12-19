@@ -41,6 +41,15 @@ def deleteAll():
     session.close()
     return all_delete
 
+def editProductById(id_Product: int, new_product: Product):
+    session = get_session()
+    repo = productRepository.ProductRepository(session)
+    product = repo.get_by_id(id_Product)
+    edit = repo.edit_product(product, new_product)
+    session.close()
+    return edit
+
+
 
 if __name__ == '__main__':
     #     print(getById(1).id_Product)

@@ -6,6 +6,7 @@ class Product(object):
     def __init__(self, name_Product=None):
         self.id_Product = 0
         self.name_Product = name_Product
+        self.image_Product = 0
 
     def get_all_product(self) -> list["Product"]:
         return backend.service.productService.findAll()
@@ -17,6 +18,14 @@ class Product(object):
     def clear_base(self):
         result = backend.service.productService.deleteAll()
         return result
+
+    def edit_product_by_id(self, id_product: int, new_Product: "Product"):
+        edit = backend.service.productService.editProductById(id_product, new_Product)
+        return edit
+
+    def get_product_by_id(self, id_product: int):
+        res = backend.service.productService.getById(idProduct=id_product)
+        return res
 
 
 

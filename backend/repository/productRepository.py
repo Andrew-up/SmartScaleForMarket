@@ -21,5 +21,16 @@ class ProductRepository(AbstractRepository):
         self.session.commit()
         return "База очищена"
 
+    def edit_product(self, product: Product, new_Product: Product):
+        x: Product = self.session.query(Product).get(product.id_Product)
+        print(product.name_Product)
+        x.name_Product = new_Product.name_Product
+        x.image_Product = new_Product.image_Product
+        self.session.commit()
+        return "Обновлено"
+
+    def get_by_id(self, id_product: int):
+        return self.session.query(Product).get(id_product)
+
     def __init__(self, session):
         self.session = session
