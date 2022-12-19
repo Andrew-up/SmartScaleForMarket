@@ -20,18 +20,17 @@ class MainWindow(QMainWindow):
         self.count: int = 0
         self.ui.button_search_by_number.clicked.connect(self.open_form_search_by_number)
         self.ui.button_search_by_name.clicked.connect(self.open_search_by_name_widget)
+        self.form_search_by_number = SearchByNumberWidget()
+        self.form_search_by_name = SearchByNameWidget()
 
     # @Slot
     def open_form_search_by_number(self):
-        form_search_by_number = SearchByNumberWidget()
-        form_search_by_number.setModal(True)
-        form_search_by_number.exec()
+        self.form_search_by_number.setModal(True)
+        self.form_search_by_number.exec()
 
     def open_search_by_name_widget(self):
-        form_search_by_name = SearchByNameWidget()
-        form_search_by_name.setModal(True)
-        form_search_by_name.exec()
-
+        self.form_search_by_name.setModal(True)
+        self.form_search_by_name.exec()
 
     @Slot()
     def add(self):
