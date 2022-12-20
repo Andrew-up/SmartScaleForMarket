@@ -25,20 +25,22 @@ class SearchByNameWidget(QDialog):
         self.num_row: int = 0
         self.num_column: int = 0
         self.keyboard_widget = KeyBoardWidget()
-        self.ui.layout_for_keyboard_widget.addWidget(self.keyboard_widget)
-        self.ui.layout_for_keyboard_widget.setContentsMargins(0, 0, 0, 0)
-        # for a in range(6):
-        #     self.add()
-        self.ui.open_close_keyboad_button.clicked.connect(self.open_close_keyboard)
-        self.initKeyboard(self.keyboard_widget)
-        self.ui.lineEdit.setFocus()
+        self.initKeyboard(self.keyboard_widget)  # Добавить виджет клавиатуры
+        self.ui.lineEdit.setFocus()  # Установить фокус на ввод текста
+        self.fill_card_all_product()  # Заполнить карточку всеми товарами
+
+    def fill_card_all_product(self):
         p = ProductController(Product(), self)
-        print(p.all_products())
         for a in p.all_products():
             self.add(a.name_Product)
 
     def initKeyboard(self, keyboard: KeyBoardWidget):
-        keyboard.ui.key_Q.clicked.connect(self.add_letter_line_edit_by_name_button)
+        # Добавление виджета
+        self.ui.layout_for_keyboard_widget.addWidget(self.keyboard_widget)
+        self.ui.layout_for_keyboard_widget.setContentsMargins(0, 0, 0, 0)
+        # Кнопка открыть/закрыть клавиатуру
+        self.ui.open_close_keyboad_button.clicked.connect(self.open_close_keyboard)
+        # Инициализация кнопок
         keyboard.ui.key_W.clicked.connect(self.add_letter_line_edit_by_name_button)
         keyboard.ui.key_E.clicked.connect(self.add_letter_line_edit_by_name_button)
         keyboard.ui.key_R.clicked.connect(self.add_letter_line_edit_by_name_button)

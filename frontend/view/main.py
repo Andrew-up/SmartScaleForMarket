@@ -4,7 +4,6 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
 from PySide6.QtCore import QSize, QRect
 from PySide6.QtGui import QImage, QPixmap, QFont
 from frontend.view.qt_ui.old.ui_mainwindow2 import Ui_MainWindow
-from definitions import MODEL_CNN_PATH
 import cv2
 from backend.service import imageService
 from frontend.controller.productController import ProductController
@@ -27,7 +26,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        imageService.loadModel(MODEL_CNN_PATH)
+        imageService.loadModel()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         # self.ui.gridLayout.setColumnStretch(3, 0)

@@ -15,15 +15,21 @@ class ProductEditWidget(QDialog):
         super(ProductEditWidget, self).__init__(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.id_product = product.id_Product
-        self.image_Product = product.image_Product
-        self.ui.label_2.setText(str(self.id_product))
-        self.ui.textEdit.setText(product.name_Product)
+        self.product = product
         self.ui.pushButton.clicked.connect(self.saveProduct)
         self.new_image_blob = 0
-        # print(product.image_Product)
-        # Добавить изображение
-        pixmap = base64_to_pixmap(product.image_Product)
+        self.fill_card_edit_product()
+        self.disabled_buttons()
+
+    def disabled_buttons(self):
+        self.ui.pushButton_2.setDisabled(True)
+        self.ui.pushButton_3.setDisabled(True)
+        self.ui.pushButton_4.setDisabled(True)
+
+    def fill_card_edit_product(self):
+        self.ui.label_2.setText(str(self.product.id_Product))
+        self.ui.textEdit.setText(self.product.name_Product)
+        pixmap = base64_to_pixmap(self.product.image_Product)
         self.ui.label_5.setPixmap(pixmap)
         self.ui.label_5.setScaledContents(True)
         self.ui.pushButton_5.clicked.connect(self.open_new_image)
@@ -43,8 +49,7 @@ class ProductEditWidget(QDialog):
         new_Product = Product()
         new_Product.name_Product = self.ui.textEdit.toPlainText()
         new_Product.image_Product = self.new_image_blob
-        edit = controller.edit_product(self.id_product, new_Product=new_Product)
-
+        edit = controller.edit_product(self.product.id_Product, new_Product=new_Product)
         print(edit)
         print("Сохранение")
 

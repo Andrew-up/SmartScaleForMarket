@@ -1,13 +1,15 @@
 import os
 import random
+from threading import Thread
 
 from keras.models import load_model
 from keras.utils import load_img, img_to_array
 import tensorflow as tf
 import numpy as np
 from heapq import nlargest
-from definitions import TEST_PATH, TRAIN_PATH
+from definitions import TEST_PATH, TRAIN_PATH, MODEL_CNN_PATH
 model = 0
+pathModel = MODEL_CNN_PATH
 
 categories = {
     0: "apple",
@@ -48,9 +50,9 @@ def whoIsImage(imageArray, categories):
     return zzzz
 
 
-def loadModel(pathModel):
+def loadModel():
     global model
     if model == 0:
         model = load_model(pathModel)
-        print("test")
+        # print("test")
     pass

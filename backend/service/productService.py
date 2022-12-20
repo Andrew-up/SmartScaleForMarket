@@ -12,7 +12,7 @@ get_session = sessionmaker(bind=engine)
 def getById(idProduct):
     session = get_session()
     repo = productRepository.ProductRepository(session)
-    item = repo.get(idProduct)
+    item = repo.get_by_id(id_product=idProduct)
     session.close()
     return item
 

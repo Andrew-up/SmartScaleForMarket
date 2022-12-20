@@ -5,7 +5,7 @@ from backend.repository.abstractRepository import AbstractRepository
 class ProductRepository(AbstractRepository):
 
     def get(self, id_item) -> Product:
-        return self.session.query(Product).first()
+        return self.session.query(Product).get(id)
 
     def add(self, data: Product) -> Product.id_Product:
         self.session.add(data)
