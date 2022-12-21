@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
 
     def randomImage(self):
 
-        imagePath = imageService.getRandomImage()
+        imagePath = imageService.getRandomImagePath()
         image = cv2.imread(imagePath)
         imageArray = imageService.imagePathToArray(imagePath)
         res = imageService.whoIsImage(imageArray, imageService.categories)

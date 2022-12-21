@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from backend.repository import productRepository
 from backend.model.product import Product
 from definitions import DATABASE_DIR
+
 # from repository.productRepository import ProductRepository
 engine = create_engine(f"sqlite:///{DATABASE_DIR}")
 get_session = sessionmaker(bind=engine)
@@ -17,13 +18,37 @@ def getById(idProduct):
     return item
 
 
-def addProduct(product_name: str):
+def getProductByLabel(labelsProduct: str):
+    session = get_session()
+    repo = productRepository.ProductRepository(session)
+    item = repo.get_by_label(label_product=labelsProduct)
+    session.close()
+    return item
+
+
+def addProductByName(product_name: str):
     session = get_session()
     repo = productRepository.ProductRepository(session)
     new_prod = Product(name_Product=product_name)
     new_item = repo.add(new_prod)
     session.close()
     return new_item
+
+
+def addProduct(product: Product):
+    session = get_session()
+    repo = productRepository.ProductRepository(session)
+    new_prod = repo.add(product)
+    session.close()
+    return new_prod
+
+
+def addProducts(products: list[Product]):
+    session = get_session()
+    repo = productRepository.ProductRepository(session)
+    new_products = repo.add_list_product(products)
+    session.close()
+    return new_products
 
 
 def findAll() -> list[Product]:
@@ -41,6 +66,7 @@ def deleteAll():
     session.close()
     return all_delete
 
+
 def editProductById(id_Product: int, new_product: Product):
     session = get_session()
     repo = productRepository.ProductRepository(session)
@@ -48,7 +74,6 @@ def editProductById(id_Product: int, new_product: Product):
     edit = repo.edit_product(product, new_product)
     session.close()
     return edit
-
 
 
 if __name__ == '__main__':

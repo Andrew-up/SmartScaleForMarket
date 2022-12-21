@@ -24,6 +24,9 @@ class ProductController(object):
     def get_Product_by_id(self, id_product: int):
         return self.model.get_product_by_id(id_product)
 
+    def get_product_by_label(self, label_product: str) -> Product:
+        return self.model.get_product_by_label(label_product)
+
 
 if __name__ == '__main__':
     pass

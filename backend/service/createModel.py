@@ -10,6 +10,8 @@ import tensorflow as tf
 from backend.helpers.plotsHelper import plot_history
 from backend.helpers.tfHelpers import setLimitGPU
 from definitions import TRAIN_PATH, TEST_PATH, MODEL_CNN_PATH
+from backend.model.product import Product
+from backend.service.productService import addProducts, addProduct
 
 
 def build_image_generator():
@@ -54,6 +56,20 @@ def build_image_generator():
     ])
 
     len_train_dataset = len(np.concatenate([i for x, i in train_dataset], axis=0))
+    id_labels: int = 0
+    # product_list = list(Product)
+    for data in train_dataset.class_names:
+        # product = Product(categorical_id=id_labels, categorical_name=data)
+        product = Product()
+        product.set_categorical_id(id_labels)
+        product.set_categorical_name(data)
+        p = addProduct(product)
+        id_labels += 1
+        print(data)
+        print(p)
+
+    # add = addProducts(product_list)
+    # print(add)
 
     # class_names = train_dataset.class_names
     # plt.figure(figsize=(10, 10))

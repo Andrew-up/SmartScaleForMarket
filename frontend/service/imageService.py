@@ -19,7 +19,3 @@ def path_to_pixmap(path):
     return pixmap
 
 
-def get_random_image_path():
-    twopatch = TEST_PATH + '/' + os.path.join(random.choice(os.listdir(TEST_PATH))) + '/'
-    imagePath = os.path.join(twopatch, random.choice(os.listdir(twopatch)))
-    return imagePath

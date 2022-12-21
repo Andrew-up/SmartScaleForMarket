@@ -35,11 +35,11 @@ class ProductEditWidget(QDialog):
         self.ui.pushButton_5.clicked.connect(self.open_new_image)
 
     def open_new_image(self):
-        fileName = QFileDialog.getOpenFileName(self, ("Open Image"), "C:", ("Image Files (*.png *.jpg)"))
+        fileName = QFileDialog.getOpenFileName(self, ("Open Image"), "C:", ("Image Files (*.png *.jpg, *.jpeg)"))
         print(fileName)
         with open(fileName[0], "rb") as image_file:
             self.new_image_blob = base64.b64encode(image_file.read())
-            # print(self.new_image_blob)
+            print(self.new_image_blob)
             pixmap = base64_to_pixmap(self.new_image_blob)
             self.ui.label_5.setPixmap(pixmap)
             self.ui.label_5.setScaledContents(True)

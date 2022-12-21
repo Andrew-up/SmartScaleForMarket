@@ -7,12 +7,14 @@ class Product(object):
         self.id_Product = 0
         self.name_Product = name_Product
         self.image_Product = 0
+        self.categorical_name = ''
+        self.categorical_id = ''
 
     def get_all_product(self) -> list["Product"]:
         return backend.service.productService.findAll()
 
     def add_product(self):
-        new_product = backend.service.productService.addProduct(self.name_Product)
+        new_product = backend.service.productService.addProductByName(self.name_Product)
         return new_product
 
     def clear_base(self):
@@ -27,5 +29,6 @@ class Product(object):
         res = backend.service.productService.getById(idProduct=id_product)
         return res
 
-
-
+    def get_product_by_label(self, product_labels: str):
+        res = backend.service.productService.getProductByLabel(labelsProduct=product_labels)
+        return res
