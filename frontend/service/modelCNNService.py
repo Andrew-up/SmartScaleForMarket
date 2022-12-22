@@ -1,10 +1,10 @@
 from PySide6.QtCore import QObject, Signal, QThread
 
-from backend.service.imageService import imagePathToArray, whoIsImage
-from frontend.model.product import Product
 from frontend.controller.modelCNNController import ModelCNNController
+from frontend.model.product import Product
 
 categories = {}
+
 
 class WorkerSignals(QObject):
     finished = Signal()
@@ -18,20 +18,31 @@ class ModelPredict(QThread):
         super(ModelPredict, self).__init__(parent)
         self.signals = WorkerSignals()
         self.result = ''
-        self.product = Product
-        self.image = ''
+        self.product = Product()
+        self.image_base64 = ''
 
     finished = Signal()  # QtCore.Signal
 
-    def add_path(self, image):
-        self.image = image
+    def add_image_base64(self, image):
+        self.image_base64 = image
+
+    def predict_product(self, imageBase64):
+        self.image_base64 = imageBase64
 
     def run(self):
-        m = ModelCNNController()
-        p = imagePathToArray(imagePath=self.image)
-        who = whoIsImage(p, categories)
-        print(who)
-        self.result = who
+        print(f"Поток {self.objectName()} запущен ")
+        con = ModelCNNController().image_predict_from_image_base64(self.image_base64)
+        # print(con)
+        self.result = con
         self.signals.finished.emit()
-        # return who
-        # print('Done sleeping')
+        print(f"поток {self.objectName()} остановлен")
+
+class LoadModel(QThread):
+    def __init__(self, parent=None):
+        super(LoadModel, self).__init__(parent)
+        self.signals = WorkerSignals()
+
+    def run(self):
+        cnn_model = ModelCNNController()
+        cnn_model.loadModel()
+        self.signals.finished.emit()

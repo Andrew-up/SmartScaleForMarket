@@ -59,6 +59,25 @@ def findAll() -> list[Product]:
     return all_prod
 
 
+def find_products_by_name(find_string: str) -> list[Product]:
+    session = get_session()
+    repo = productRepository.ProductRepository(session)
+    all_prod = repo.find_by_name(find_string)
+    session.close()
+    return all_prod
+
+
+def findAllCategories():
+    session = get_session()
+    repo = productRepository.ProductRepository(session)
+    cat = {}
+    all_prod = repo.find_all()
+    for a in all_prod:
+        cat[a.categorical_id] = a.categorical_name
+    session.close()
+    return cat
+
+
 def deleteAll():
     session = get_session()
     repo = productRepository.ProductRepository(session)
@@ -79,6 +98,6 @@ def editProductById(id_Product: int, new_product: Product):
 if __name__ == '__main__':
     #     print(getById(1).id_Product)
     #     print(addProduct("Пример 1"))
-    print(findAll())
+    find_products_by_name('б')
     # print(deleteAll())
     pass

@@ -28,11 +28,18 @@ class SearchByNameWidget(QDialog):
         self.initKeyboard(self.keyboard_widget)  # Добавить виджет клавиатуры
         self.ui.lineEdit.setFocus()  # Установить фокус на ввод текста
         self.fill_card_all_product()  # Заполнить карточку всеми товарами
+        self.ui.lineEdit.textChanged.connect(self.find_product_by_text)
+        self.p = ProductController(Product(), self)
 
     def fill_card_all_product(self):
-        p = ProductController(Product(), self)
-        for a in p.all_products():
+        # self.p = ProductController(Product(), self)
+        for a in self.p.all_products():
             self.add(a.name_Product)
+
+    def find_product_by_text(self):
+        if len(self.ui.lineEdit.text()) >= 3:
+            print("активно ищу в базе")
+
 
     def initKeyboard(self, keyboard: KeyBoardWidget):
         # Добавление виджета

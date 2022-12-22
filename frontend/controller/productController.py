@@ -12,6 +12,9 @@ class ProductController(object):
     def all_products(self) -> list[Product]:
         return self.model.get_all_product()
 
+    def find_products_by_name(self) -> list[Product]:
+        return self.model.get_all_product()
+
     def new_product(self, nameProduct: str):
         return self.model.add_product(Product(name_Product=nameProduct))
 

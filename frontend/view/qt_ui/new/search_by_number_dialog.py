@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
     QWidget)
 import frontend.view.qt_ui.new.resourses_rc
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():

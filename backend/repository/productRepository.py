@@ -1,6 +1,7 @@
 from backend.model.product import Product
 from backend.repository.abstractRepository import AbstractRepository
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import func
 
 class ProductRepository(AbstractRepository):
 
@@ -23,6 +24,19 @@ class ProductRepository(AbstractRepository):
 
     def find_all(self) -> list[Product]:
         return self.session.query(Product).all()
+
+    def find_by_name(self, find_string: str):
+        # Product.query.filter
+        ssss = self.session.query(Product).filter(func.lower(Product.name_Product).contains(find_string.lower()))
+        req: list[Product] = self.session.query(Product).filter(func.lower(Product.name_Product).contains(find_string.lower())).all()
+        print(ssss)
+        # print(req)
+        for a in req:
+            print(a.name_Product)
+        # return req
+
+    def find_all_categories(self) -> list[Product.categorical_name]:
+        return self.session.query(Product.categorical_name).all()
 
     def delete_all(self) -> str:
         self.session.query(Product).delete()
