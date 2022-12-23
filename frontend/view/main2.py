@@ -1,8 +1,9 @@
 import sys
 
-from PySide6.QtCore import Slot
+import cv2
+from PySide6.QtCore import Slot, QThread
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox
-
+from PySide6.QtGui import QPixmap, QImage
 from frontend.controller.productController import ProductController
 from frontend.model.product import Product
 from frontend.service.imageService import ImageService
@@ -11,6 +12,10 @@ from frontend.view.qt_ui.formwidget import ProductWidget
 from frontend.view.qt_ui.new.mainwindow import Ui_MainWindow
 from frontend.view.qt_ui.search_by_name import SearchByNameWidget
 from frontend.view.qt_ui.search_by_number_widget import SearchByNumberWidget
+
+
+from frontend.service.videoService import VideoWorker
+
 
 
 class MainWindow(QMainWindow):
@@ -25,19 +30,43 @@ class MainWindow(QMainWindow):
         self.form_search_by_number = SearchByNumberWidget()
         self.form_search_by_name = SearchByNameWidget()
         self.ui.getRandomImageButton.clicked.connect(self.add_image_to_label)
+        # self.ui.getRandomImageButton.clicked.connect(self.replay_Video)
+        self.ui.startRandomVideo.clicked.connect(self.replay_Video)
         self.load_model = LoadModel()
         self.load_model.signals.finished.connect(self.stop_th)
-        self.start_th()
-        self.ui.getRandomImageButton.setDisabled(True)
+        # self.start_th()
+        # self.ui.getRandomImageButton.setDisabled(True)
         self.model_predict_obj = ModelPredict()
         self.model_predict_obj.signals.finished.connect(self.stop_model_predict_obj)
-
+        self.ui.image_to_cnn.setScaledContents(True)
         self.ui.button_YES_product.clicked.connect(self.click_yes_product)
+
+        self.th = VideoWorker(self)
+        self.th.changePixmap.connect(self.setImage)
+        self.th.end_video.connect(self.endVideo)
+
         # p = ProductController(Product(), self)
         # for a in p.all_products():
         #     print(a.categorical_name)
         # categories[a.categorical_id] = a.categorical_name
-        # print(categories)
+
+        # self.vs = VideoService()
+        # # self.ui.image_to_cnn
+        # self.vs.start()
+        # self.vs.signal.connect(self.imageUpdateSlot)
+        # # print(categories)
+
+    def replay_Video(self):
+        self.th.start()
+    @Slot()
+    def endVideo(self):
+        print("Видео закончилось")
+        self.ui.image_to_cnn.clear()
+
+    @Slot(QImage)
+    def setImage(self, image):
+
+        self.ui.image_to_cnn.setPixmap(QPixmap.fromImage(image))
 
     def click_yes_product(self):
         print("Печать чека для продукта")
@@ -60,7 +89,7 @@ class MainWindow(QMainWindow):
         image_path = image_service.get_image_path()
         pixmap = image_service.path_to_pixmap(image_path)
         self.ui.image_to_cnn.setPixmap(pixmap)
-        self.ui.image_to_cnn.setScaledContents(True)
+        # self.ui.image_to_cnn.setScaledContents(True)
         image_base64 = image_service.get_image_base64(image_path)
         print(image_base64)
         self.what_product(image_base64)

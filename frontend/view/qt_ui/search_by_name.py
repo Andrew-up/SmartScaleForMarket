@@ -8,7 +8,7 @@ from frontend.view.qt_ui.new.item_product_wigdet import ItemProductWidget
 from frontend.view.qt_ui.keyboard_widget import KeyBoardWidget
 from frontend.controller.productController import ProductController
 from frontend.model.product import Product
-
+from frontend.service.imageService import ImageService
 
 class SearchByNameWidget(QDialog):
 
@@ -32,14 +32,38 @@ class SearchByNameWidget(QDialog):
         self.p = ProductController(Product(), self)
 
     def fill_card_all_product(self):
-        # self.p = ProductController(Product(), self)
+        self.p = ProductController(Product(), self)
         for a in self.p.all_products():
-            self.add(a.name_Product)
+            self.add(a)
+
+    def clear_all_card(self):
+        while self.ui.gridLayout_2.count():
+            item = self.ui.gridLayout_2.takeAt(0)
+            widget = item.widget()
+            widget.deleteLater()
+            self.num_column = 0
+            self.num_row = 0
+        # for i in reversed(range(self.ui.gridLayout_2.count())):
+        #     print()
+        #     self.ui.gridLayout_2.itemAt(i).widget().deleteLater()
 
     def find_product_by_text(self):
-        if len(self.ui.lineEdit.text()) >= 3:
-            print("активно ищу в базе")
-
+        len_line_edit = len(self.ui.lineEdit.text())
+        if len_line_edit >= 2:
+            req = self.p.find_products_by_name(self.ui.lineEdit.text())
+            self.clear_all_card()
+            if len(req) == 0:
+                # pass
+                p = Product()
+                p.name_Product = "Ничего не нашлось"
+                self.add(p)
+            if len(req) > 0:
+                self.clear_all_card()
+                for a in req:
+                    self.add(a)
+        if len_line_edit == 0:
+            self.clear_all_card()
+            self.fill_card_all_product()
 
     def initKeyboard(self, keyboard: KeyBoardWidget):
         # Добавление виджета
@@ -117,9 +141,12 @@ class SearchByNameWidget(QDialog):
         # pass
 
     @Slot()
-    def add(self, name_product: str):
+    def add(self, product: Product):
         item_widget = ItemProductWidget()
-        item_widget.ui.label_2.setText(name_product)
+        item_widget.ui.label_2.setText(product.name_Product)
+        if product.image_Product != 0:
+            item_widget.ui.label.setPixmap(ImageService().base64_to_pixmap(product.image_Product))
+            item_widget.ui.label.setScaledContents(True)
         self.ui.gridLayout_2.addWidget(item_widget, self.num_row, self.num_column)
         self.num_column += 1
         if self.num_column % 4 == 0:

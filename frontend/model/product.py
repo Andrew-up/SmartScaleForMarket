@@ -13,8 +13,8 @@ class Product(object):
     def get_all_product(self) -> list["Product"]:
         return backend.service.productService.findAll()
 
-    def get_products_by_name(self) -> list["Product"]:
-        return backend.service.productService.findAll()
+    def get_products_by_name(self, name_product: str) -> list["Product"]:
+        return backend.service.productService.find_products_by_name(name_product)
 
     def add_product(self):
         new_product = backend.service.productService.addProductByName(self.name_Product)

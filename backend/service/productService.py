@@ -64,6 +64,8 @@ def find_products_by_name(find_string: str) -> list[Product]:
     repo = productRepository.ProductRepository(session)
     all_prod = repo.find_by_name(find_string)
     session.close()
+    # print(find_string)
+    # print(all_prod)
     return all_prod
 
 
@@ -98,6 +100,6 @@ def editProductById(id_Product: int, new_product: Product):
 if __name__ == '__main__':
     #     print(getById(1).id_Product)
     #     print(addProduct("Пример 1"))
-    find_products_by_name('б')
+    print(find_products_by_name('б'))
     # print(deleteAll())
     pass

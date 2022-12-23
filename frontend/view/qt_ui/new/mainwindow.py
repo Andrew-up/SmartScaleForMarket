@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QMainWindow,
     QSpacerItem, QStatusBar, QVBoxLayout, QWidget)
 import frontend.view.qt_ui.new.resourses_rc
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -88,7 +89,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 797, 539))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 795, 539))
         self.horizontalLayout_2 = QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.product_List_Layout_2 = QHBoxLayout()
@@ -145,6 +146,13 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8 = QHBoxLayout()
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.verticalLayout_5 = QVBoxLayout()
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.startRandomVideo = QPushButton(self.widget)
+        self.startRandomVideo.setObjectName(u"startRandomVideo")
+
+        self.verticalLayout_5.addWidget(self.startRandomVideo)
+
         self.getRandomImageButton = QPushButton(self.widget)
         self.getRandomImageButton.setObjectName(u"getRandomImageButton")
         self.getRandomImageButton.setMouseTracking(False)
@@ -152,7 +160,10 @@ class Ui_MainWindow(object):
         self.getRandomImageButton.setAutoRepeat(True)
         self.getRandomImageButton.setAutoExclusive(False)
 
-        self.horizontalLayout_8.addWidget(self.getRandomImageButton)
+        self.verticalLayout_5.addWidget(self.getRandomImageButton)
+
+
+        self.horizontalLayout_8.addLayout(self.verticalLayout_5)
 
         self.image_to_cnn = QLabel(self.widget)
         self.image_to_cnn.setObjectName(u"image_to_cnn")
@@ -269,6 +280,8 @@ class Ui_MainWindow(object):
         self.label_who_is_product.setText(QCoreApplication.translate("MainWindow", u"\u0414\u0430\u043d\u043d\u044b\u0439 \u043f\u0440\u043e\u0434\u0443\u043a\u0442 \u043d\u0430 \u0432\u0435\u0441\u0430\u0445?", None))
         self.button_YES_product.setText(QCoreApplication.translate("MainWindow", u"\u0414\u0410", None))
         self.button_NO_product.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0415\u0422", None))
+        self.startRandomVideo.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c \n"
+" \u0432\u0438\u0434\u0435\u043e", None))
         self.getRandomImageButton.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \n"
 " \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u043e\u0439 \n"
 " \u043a\u0430\u0440\u0442\u0438\u043d\u043a\u0438", None))

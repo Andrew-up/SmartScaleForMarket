@@ -12,8 +12,8 @@ class ProductController(object):
     def all_products(self) -> list[Product]:
         return self.model.get_all_product()
 
-    def find_products_by_name(self) -> list[Product]:
-        return self.model.get_all_product()
+    def find_products_by_name(self, name_product: str) -> list[Product]:
+        return self.model.get_products_by_name(name_product)
 
     def new_product(self, nameProduct: str):
         return self.model.add_product(Product(name_Product=nameProduct))
@@ -32,5 +32,8 @@ class ProductController(object):
 
 
 if __name__ == '__main__':
+    p = ProductController(Product(), ProductController)
+    res = p.find_products_by_name("Я")
+    print(res)
     pass
 
