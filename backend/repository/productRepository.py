@@ -1,7 +1,7 @@
 from backend.model.product import Product
 from backend.repository.abstractRepository import AbstractRepository
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import func
+from sqlalchemy import func, not_
 
 
 class ProductRepository(AbstractRepository):
@@ -24,10 +24,13 @@ class ProductRepository(AbstractRepository):
         return "успешно добавлены: " + str(successful_append)
 
     def find_all(self) -> list[Product]:
+        return self.session.query(Product).filter(not_(Product.categorical_name.contains('background'))).all()
+
+    def find_all_and_background(self) -> list[Product]:
         return self.session.query(Product).all()
 
     def find_by_name(self, find_string: str):
-        req: list[Product] = self.session.query(Product).all()
+        req: list[Product] = self.session.query(Product).filter(not_(Product.categorical_name.contains('background'))).all()
         res = list()
         for a in req:
             # print(a)
@@ -37,7 +40,7 @@ class ProductRepository(AbstractRepository):
         return res
 
     def find_all_categories(self) -> list[Product.categorical_name]:
-        return self.session.query(Product.categorical_name).all()
+        return self.session.query(Product.categorical_name).filter(not_(Product.categorical_name.contains('background'))).all()
 
     def delete_all(self) -> str:
         self.session.query(Product).delete()

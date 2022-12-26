@@ -73,7 +73,7 @@ def findAllCategories():
     session = get_session()
     repo = productRepository.ProductRepository(session)
     cat = {}
-    all_prod = repo.find_all()
+    all_prod = repo.find_all_and_background()
     for a in all_prod:
         cat[a.categorical_id] = a.categorical_name
     session.close()

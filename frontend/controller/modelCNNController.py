@@ -1,7 +1,5 @@
-import os
-
 from backend.service import imageService
-from backend.service.imageService import getRandomImagePath, imagePathToArray, whoIsImage, whoIsImageBase64
+from backend.service.imageService import whoIsImageBase64
 
 
 

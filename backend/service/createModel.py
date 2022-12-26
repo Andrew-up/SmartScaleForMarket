@@ -23,50 +23,50 @@ def build_image_generator():
                                                  labels='inferred',
                                                  label_mode='categorical',
                                                  subset='training',
-                                                 validation_split=0.25,
+                                                 validation_split=0.5,
                                                  batch_size=batch_size,
-                                                 seed=123,
+                                                 seed=12,
                                                  image_size=(img_height, img_width))
 
     validation_dataset = image_dataset_from_directory(TRAIN_PATH,
                                                       labels='inferred',
                                                       label_mode='categorical',
                                                       subset='validation',
-                                                      validation_split=0.25,
+                                                      validation_split=0.5,
                                                       batch_size=batch_size,
-                                                      seed=123,
+                                                      seed=12,
                                                       image_size=(img_height, img_width))
 
     test_dataset = image_dataset_from_directory(TEST_PATH,
                                                 labels='inferred',
                                                 label_mode='categorical',
                                                 batch_size=batch_size,
-                                                seed=123,
+                                                seed=12,
                                                 image_size=(img_height, img_width))
 
     len_class_dataset = len(train_dataset.class_names)
 
     data_augmentation = tf.keras.Sequential([
         layers.RandomFlip("horizontal"),
-        layers.RandomRotation(0.3),
-        layers.RandomContrast(factor=0.5),
+        layers.RandomRotation(0.15),
+        layers.RandomContrast(factor=0.1),
         layers.Resizing(img_height, img_width),
-        layers.CenterCrop(img_height, img_width),
+        # layers.CenterCrop(img_height, img_width),
         layers.Rescaling(1. / 255),
     ])
 
-    len_train_dataset = len(np.concatenate([i for x, i in train_dataset], axis=0))
-    id_labels: int = 0
-    # product_list = list(Product)
-    for data in train_dataset.class_names:
-        # product = Product(categorical_id=id_labels, categorical_name=data)
-        product = Product()
-        product.set_categorical_id(id_labels)
-        product.set_categorical_name(data)
-        p = addProduct(product)
-        id_labels += 1
-        print(data)
-        print(p)
+    # len_train_dataset = len(np.concatenate([i for x, i in train_dataset], axis=0))
+    # id_labels: int = 0
+    # # product_list = list(Product)
+    # for data in train_dataset.class_names:
+    #     # product = Product(categorical_id=id_labels, categorical_name=data)
+    #     product = Product()
+    #     product.set_categorical_id(id_labels)
+    #     product.set_categorical_name(data)
+    #     p = addProduct(product)
+    #     id_labels += 1
+    #     print(data)
+    #     print(p)
 
     # add = addProducts(product_list)
     # print(add)
@@ -111,7 +111,7 @@ def build_image_generator():
                                                              patience=10)
 
     history = model.fit(train_dataset,
-                        batch_size=32,
+                        batch_size=8,
                         epochs=50,
                         verbose=2,
                         validation_data=validation_dataset,

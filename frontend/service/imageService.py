@@ -9,6 +9,7 @@ import base64
 from PySide6.QtGui import QImage, QPixmap
 from frontend.controller.modelCNNController import ModelCNNController
 
+
 class ImageService:
 
     def __init__(self, parent=None):
@@ -45,6 +46,18 @@ class ImageService:
             string_utf_8 = base64_data.decode('utf-8')
             self.image_path = string_utf_8
             return string_utf_8
+
+    def QImage_to_base64(self, qimage: QImage):
+        image = qimage.scaledToWidth(300)
+        image = qimage.scaledToHeight(300)
+        ba = QByteArray()
+        buffer = QBuffer(ba)
+        buffer.open(QIODevice.WriteOnly)
+        image.save(buffer, 'PNG')
+        base64_data = ba.toBase64().data()
+        string_utf_8 = base64_data.decode('utf-8')
+        # print(string_utf_8)
+        return string_utf_8
 
     def get_image_qimage(self):
         image = QImage(self.get_image_path())

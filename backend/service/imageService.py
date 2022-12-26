@@ -46,7 +46,7 @@ def whoIsImage(imageArray, categories):
     for i in (predictions[0]):
         zzzz += [(categories[a], round(i * 100, 3))]
         a += 1
-
+    print(len(zzzz))
     zzzz = (sorted(zzzz, key=lambda x: (x[1]), reverse=True)[:2])
     return zzzz
 

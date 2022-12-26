@@ -1,21 +1,18 @@
 import sys
 
-import cv2
-from PySide6.QtCore import Slot, QThread
-from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox
+from PySide6.QtCore import Slot
 from PySide6.QtGui import QPixmap, QImage
+from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox
+
 from frontend.controller.productController import ProductController
 from frontend.model.product import Product
 from frontend.service.imageService import ImageService
-from frontend.service.modelCNNService import categories, ModelPredict, LoadModel
+from frontend.service.modelCNNService import ModelPredict, LoadModel
+from frontend.service.videoService import VideoWorker
 from frontend.view.qt_ui.formwidget import ProductWidget
 from frontend.view.qt_ui.new.mainwindow import Ui_MainWindow
 from frontend.view.qt_ui.search_by_name import SearchByNameWidget
 from frontend.view.qt_ui.search_by_number_widget import SearchByNumberWidget
-
-
-from frontend.service.videoService import VideoWorker
-
 
 
 class MainWindow(QMainWindow):
@@ -31,7 +28,7 @@ class MainWindow(QMainWindow):
         self.form_search_by_name = SearchByNameWidget()
         self.ui.getRandomImageButton.clicked.connect(self.add_image_to_label)
         # self.ui.getRandomImageButton.clicked.connect(self.replay_Video)
-        self.ui.startRandomVideo.clicked.connect(self.replay_Video)
+        self.ui.startRandomVideo.clicked.connect(self.pause_Video)
         self.load_model = LoadModel()
         self.load_model.signals.finished.connect(self.stop_th)
         # self.start_th()
@@ -40,11 +37,12 @@ class MainWindow(QMainWindow):
         self.model_predict_obj.signals.finished.connect(self.stop_model_predict_obj)
         self.ui.image_to_cnn.setScaledContents(True)
         self.ui.button_YES_product.clicked.connect(self.click_yes_product)
-
         self.th = VideoWorker(self)
-        self.th.changePixmap.connect(self.setImage)
+        self.th.changePixmap.connect(self.setVideo)
         self.th.end_video.connect(self.endVideo)
-
+        self.th.timer.connect(self.timer)
+        self.th.start()
+        self.max_percent_product_name = ''
         # p = ProductController(Product(), self)
         # for a in p.all_products():
         #     print(a.categorical_name)
@@ -55,17 +53,35 @@ class MainWindow(QMainWindow):
         # self.vs.start()
         # self.vs.signal.connect(self.imageUpdateSlot)
         # # print(categories)
+        self.string = ''
+        self.ui.getRandomImageButton.setDisabled(True)
+        self.max_percent_product_to_categorical = ''
 
-    def replay_Video(self):
-        self.th.start()
+    @Slot(QImage)
+    def timer(self, image):
+        # print(image)
+        image_service = ImageService()
+        image_base_64 = image_service.QImage_to_base64(image)
+        self.what_product(image=image_base_64)
+        # self.ui.startRandomVideo.setText("Пауза")
+        # print("test")
+
+    def pause_Video(self):
+        self.th.playVideo = not self.th.playVideo
+        if self.th.playVideo is True:
+            self.ui.startRandomVideo.setText("Пауза")
+            self.ui.startRandomVideo.setDisabled(True)
+        else:
+            self.ui.startRandomVideo.setText("Старт")
+            print("Видео остановлено")
+
     @Slot()
     def endVideo(self):
         print("Видео закончилось")
         self.ui.image_to_cnn.clear()
 
     @Slot(QImage)
-    def setImage(self, image):
-
+    def setVideo(self, image):
         self.ui.image_to_cnn.setPixmap(QPixmap.fromImage(image))
 
     def click_yes_product(self):
@@ -78,11 +94,15 @@ class MainWindow(QMainWindow):
         message.exec()
 
     def what_product(self, image):
+        # print(image)
+        #
+        self.th.playVideo = False
         self.model_predict_obj.add_image_base64(image)
         self.model_predict_obj.setObjectName("IMAGE-PREDICT")
         self.model_predict_obj.start()
-        self.ui.label_who_is_product.setText("Идет распознавание товара...")
-        self.ui.getRandomImageButton.setDisabled(True)
+        # self.th.playVideo = False
+        # self.ui.label_who_is_product.setText("Идет распознавание товара...")
+        # self.ui.getRandomImageButton.setDisabled(True)
 
     def add_image_to_label(self):
         image_service = ImageService()
@@ -94,23 +114,35 @@ class MainWindow(QMainWindow):
         print(image_base64)
         self.what_product(image_base64)
 
+
     def stop_model_predict_obj(self):
-        for i in reversed(range(self.ui.product_List_Layout_2.count())):
-            self.ui.product_List_Layout_2.itemAt(i).widget().deleteLater()
-        string = ''
-        for a in self.model_predict_obj.result:
-            if float(a[1]) > float(90.0):
+        self.ui.startRandomVideo.setDisabled(False)
+        # self.th.playVideo = True
+        # self.string = ''
+        result = self.model_predict_obj.result
+        for a in result:
+            print(f'{a[0]} {a[1]}  %')
+            # print()
+            self.th.playVideo = True
+            if float(a[1]) < float(60):
+                self.string = ''
+            if float(a[1]) > float(70.0):
+                for i in reversed(range(self.ui.product_List_Layout_2.count())):
+                    self.ui.product_List_Layout_2.itemAt(i).widget().deleteLater()
                 self.count += 1
                 c = ProductController(Product(), self)
                 res = c.get_product_by_label(str(a[0]))
-                string += a[0] + ' ' + str(a[1]) + '% \n'
-                string += f"На весах {res.name_Product} ?"
                 formwidget = ProductWidget(res)
                 self.model_predict_obj.product = res
                 self.ui.product_List_Layout_2.addWidget(formwidget)
+                self.string += a[0] + ' ' + str(a[1]) + '% \n'
+                self.string += f"На весах {res.name_Product} ?"
+                self.ui.label_who_is_product.setText(self.string)
 
-        self.ui.label_who_is_product.setText(string)
-        self.ui.getRandomImageButton.setDisabled(False)
+
+        # self.ui.getRandomImageButton.setDisabled(False)
+        # self.ui.startRandomVideo.setText("Старт")
+        # self.th.playVideo = True
 
     def start_th(self):
         self.load_model.start()
