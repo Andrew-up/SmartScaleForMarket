@@ -96,6 +96,13 @@ def editProductById(id_Product: int, new_product: Product):
     session.close()
     return edit
 
+def getLastProduct():
+    session = get_session()
+    repo = productRepository.ProductRepository(session)
+    last_prod = repo.get_last()
+    session.close()
+    return last_prod
+
 
 if __name__ == '__main__':
     #     print(getById(1).id_Product)

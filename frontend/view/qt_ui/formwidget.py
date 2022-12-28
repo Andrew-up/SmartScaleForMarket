@@ -18,7 +18,6 @@ class ProductWidget(QWidget):
     def on_click_item(self):
         print("test")
     def fill_card(self):
-
         self.ui.label_name_product.setText(self.product.name_Product)
         if self.product.image_Product != 0:
             # print(self.product.image_Product)

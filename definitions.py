@@ -7,6 +7,9 @@ MODEL_CNN_PATH = os.path.join(ROOT_DIR, "backend/models_cnn/saved_model.h5")
 # print(os.path.join(ROOT_DIR, "data_base/db.db"))
 
 TRAIN_PATH = os.path.join(ROOT_DIR, "backend/models_cnn/data/train")
-TEST_PATH = os.path.join(ROOT_DIR, "backend/models_cnn/data/testimage")
+# TEST_PATH = os.path.join(ROOT_DIR, "backend/models_cnn/data/testimage")
+TEST_PATH = os.path.join(ROOT_DIR, "backend/models_cnn/data/train")
 
 VIDEO_OR_IMAGE_TEST_PATH = os.path.join(ROOT_DIR, "frontend/data_test/")
+
+LABELS_IMAGE = os.path.join(ROOT_DIR, "backend/models_cnn/labels_images")

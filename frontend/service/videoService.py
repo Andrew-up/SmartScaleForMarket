@@ -30,9 +30,9 @@ class VideoWorker(QThread):
                     rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     convertToQtFormat = QImage(rgbImage.data, rgbImage.shape[1], rgbImage.shape[0],
                                                QImage.Format.Format_RGB888)
-                    p = convertToQtFormat.scaled(500, 500, Qt.KeepAspectRatio)
+                    p = convertToQtFormat.scaled(224, 224, Qt.KeepAspectRatio)
                     self.changePixmap.emit(p)
-                    if time.time() - timer >= 0.3:
+                    if time.time() - timer >= 0.5:
                         timer = time.time()
                         self.timer.emit(p)
 

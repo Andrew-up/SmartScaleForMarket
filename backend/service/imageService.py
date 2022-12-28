@@ -2,6 +2,9 @@ import base64
 import os
 import random
 from io import BytesIO
+
+from PySide6.QtCore import QByteArray, QIODevice, QBuffer
+from PySide6.QtGui import QImage
 from keras.models import load_model
 from keras.utils import load_img, img_to_array
 import tensorflow as tf
@@ -13,6 +16,19 @@ pathModel = MODEL_CNN_PATH
 
 categories = {}
 
+
+def get_image_base64(image_path):
+    with open(str(image_path), "rb") as img_file:
+        image = QImage(img_file.name)
+        image = image.scaledToWidth(224)
+        image = image.scaledToHeight(224)
+        ba = QByteArray()
+        buffer = QBuffer(ba)
+        buffer.open(QIODevice.WriteOnly)
+        image.save(buffer, 'PNG')
+        base64_data = ba.toBase64().data()
+        string_utf_8 = base64_data.decode('utf-8')
+        return string_utf_8
 
 def imageToArray(image):
     pass

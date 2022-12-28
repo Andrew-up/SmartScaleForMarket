@@ -18,6 +18,8 @@ class Product(Base):
 
     def set_name_Product(self, name_Product: str):
         self.name_Product = name_Product
+    def set_image_Product(self, image: BLOB):
+        self.image_Product = image
 
     def set_categorical_name(self, categorical_name: str):
         self.categorical_name = categorical_name

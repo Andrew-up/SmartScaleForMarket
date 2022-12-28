@@ -8,6 +8,8 @@ class ProductRepository(AbstractRepository):
 
     def get(self, id_item) -> Product:
         return self.session.query(Product).get(id)
+    def get_last(self) -> Product:
+        return self.session.query(Product).order_by(Product.categorical_id.desc()).first()
 
     def add(self, data: Product) -> Product.id_Product:
         self.session.add(data)
