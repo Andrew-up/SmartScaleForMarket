@@ -148,8 +148,9 @@ def build_image_generator():
                         )
 
     plot_history(history)
+    print("структура модели")
     print(model.summary())
-
+    print("сохранение модели")
     model.save(MODEL_CNN_PATH)
 
     # visualize_CNN_model(6, path_model + name_saved_model, class_names, train_dataset)

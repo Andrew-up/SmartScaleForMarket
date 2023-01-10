@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from definitions import DATABASE_DIR
 
 Base = declarative_base()
-from migrate.changeset import *
+# from migrate.changeset import *
 
 
 class Product(Base):
@@ -32,11 +32,11 @@ class Product(Base):
 engine = create_engine(f"sqlite:///{DATABASE_DIR}", echo=True)
 
 
-def add_column(name_column: str, tableName: str):
-    db_meta = MetaData(bind=engine)
-    table = Table(tableName, db_meta)
-    name_column = Column(name_column, String(250))
-    create_column(name_column, table)
+# def add_column(name_column: str, tableName: str):
+#     db_meta = MetaData(bind=engine)
+#     table = Table(tableName, db_meta)
+#     name_column = Column(name_column, String(250))
+#     create_column(name_column, table)
 
 
 if __name__ == '__main__':
