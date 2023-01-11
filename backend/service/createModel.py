@@ -22,8 +22,6 @@ name_labels_to_ru = {
     'banana': 'Банан'
 }
 
-
-
 def build_image_generator():
     batch_size = 8
     img_height = 224
@@ -117,27 +115,27 @@ def build_image_generator():
     model.add(Conv2D(64, (3, 3), padding="same", activation="relu"))
     # model.add(Dropout(0.1))
     model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
-    model.add(Dropout(0.1))
+    model.add(Dropout(0.15))
     model.add(Conv2D(128, (3, 3), padding="same", activation="relu"))
     model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
-    model.add(Dropout(0.25))
+    model.add(Dropout(0.15))
     model.add(Flatten())
     model.add(Dense(256, activation='relu'))
-    model.add(Dropout(0.35))
+    model.add(Dropout(0.25))
     model.add(Dense(len_class_dataset, activation='softmax'))
 
     model.compile(loss='categorical_crossentropy',
                   # optimizer=keras.optimizers.Adam(),
-                  optimizer=keras.optimizers.Adam(0.0002),
+                  optimizer=keras.optimizers.Adam(0.0003),
                   metrics=['accuracy'])
 
     callback_val_loss = tf.keras.callbacks.EarlyStopping(monitor="val_loss",
                                                          mode="auto",
-                                                         patience=20)
+                                                         patience=12)
 
     callback_val_accuracy = tf.keras.callbacks.EarlyStopping(monitor="val_accuracy",
                                                              mode="auto",
-                                                             patience=20)
+                                                             patience=12)
 
     history = model.fit(train_dataset,
                         batch_size=batch_size,
@@ -147,14 +145,16 @@ def build_image_generator():
                         callbacks=[callback_val_loss, callback_val_accuracy],
                         )
 
-    plot_history(history)
-    print("структура модели")
-    print(model.summary())
-    print("сохранение модели")
+
+    print("Сохранение модели")
     model.save(MODEL_CNN_PATH)
-
+    print('Модель сохранена')
     # visualize_CNN_model(6, path_model + name_saved_model, class_names, train_dataset)
+    plot_history(history)
+    print("Структура модели")
 
+    print(model.summary())
+    print('Тестирование модели')
     test_evaluate = model.evaluate(test_dataset)
     print(test_evaluate)
 
