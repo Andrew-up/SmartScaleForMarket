@@ -23,7 +23,7 @@ name_labels_to_ru = {
 }
 
 def build_image_generator():
-    batch_size = 8
+    batch_size = 16
     img_height = 224
     img_width = 224
 
@@ -31,18 +31,18 @@ def build_image_generator():
                                                  labels='inferred',
                                                  label_mode='categorical',
                                                  subset='training',
-                                                 validation_split=0.3,
+                                                 validation_split=0.35,
                                                  batch_size=batch_size,
-                                                 seed=12,
+                                                 seed=123,
                                                  image_size=(img_height, img_width))
 
     validation_dataset = image_dataset_from_directory(TRAIN_PATH,
                                                       labels='inferred',
                                                       label_mode='categorical',
                                                       subset='validation',
-                                                      validation_split=0.3,
+                                                      validation_split=0.35,
                                                       batch_size=batch_size,
-                                                      seed=12,
+                                                      seed=123,
                                                       image_size=(img_height, img_width))
 
     test_dataset = image_dataset_from_directory(TEST_PATH,
@@ -56,7 +56,7 @@ def build_image_generator():
 
     data_augmentation = tf.keras.Sequential([
         # layers.RandomFlip("horizontal"),
-        # layers.RandomRotation(0.15),
+        layers.RandomRotation(0.25),
         # layers.RandomContrast(factor=0.1),
         layers.Resizing(img_height, img_width),
         # layers.CenterCrop(img_height, img_width),
@@ -120,8 +120,8 @@ def build_image_generator():
     model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
     model.add(Dropout(0.15))
     model.add(Flatten())
-    model.add(Dense(256, activation='relu'))
-    model.add(Dropout(0.25))
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0.20))
     model.add(Dense(len_class_dataset, activation='softmax'))
 
     model.compile(loss='categorical_crossentropy',
@@ -131,11 +131,11 @@ def build_image_generator():
 
     callback_val_loss = tf.keras.callbacks.EarlyStopping(monitor="val_loss",
                                                          mode="auto",
-                                                         patience=12)
+                                                         patience=9)
 
     callback_val_accuracy = tf.keras.callbacks.EarlyStopping(monitor="val_accuracy",
                                                              mode="auto",
-                                                             patience=12)
+                                                             patience=9)
 
     history = model.fit(train_dataset,
                         batch_size=batch_size,
