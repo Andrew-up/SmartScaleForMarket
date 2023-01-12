@@ -25,19 +25,25 @@ def image_crop_opencv(image):
     holst = np.zeros([224, 224, 3], np.uint8)
     for contour in contours:
         (x, y, w, h) = cv2.boundingRect(contour)
-        # cv2.rectangle(image_resize, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        image_draw = image_resize.copy()
+        image_draw_rectangle = cv2.rectangle(image_draw, (x, y), (x + w, y + h), (0, 0, 255), 7)
+        convertToQtFormat = QImage(image_draw_rectangle.data, image_draw_rectangle.shape[1], image_draw_rectangle.shape[0],
+                      QImage.Format.Format_BGR888)
+        image_detect_qt_format = convertToQtFormat.scaled(224, 224, Qt.KeepAspectRatio)
+
         crop = image_resize[y:h + y, x:w + x]
-
-        if crop.shape[0] > 1 and crop.shape[1] > 1:
+        if crop.shape[0] > 70 and crop.shape[1] > 70:
             crop_resize = cv2.resize(crop, (holst.shape[1], holst.shape[0]))
-            # cv2.imshow('image', crop_resize)
-            convertToQtFormat = QImage(crop_resize.data, crop_resize.shape[1], crop_resize.shape[0],
+            convertToQtFormats = QImage(crop_resize.data, crop_resize.shape[1], crop_resize.shape[0],
                                        QImage.Format.Format_BGR888)
-            p2 = convertToQtFormat.scaled(224, 224, Qt.KeepAspectRatio)
-            return p2
+            crop_resize_qt = convertToQtFormats.scaled(224, 224, Qt.KeepAspectRatio)
+            return image_detect_qt_format, crop_resize_qt
 
-    return -1
-    # pass
+    convertToQtFormat = QImage(image_resize.data, image_resize.shape[1], image_resize.shape[0],
+                                QImage.Format.Format_BGR888)
+    image_not_detect = convertToQtFormat.scaled(224, 224, Qt.KeepAspectRatio)
+
+    return image_not_detect, False
 
 
 class VideoWorker(QThread):
@@ -61,20 +67,29 @@ class VideoWorker(QThread):
             if self.playVideo:
                 ret, frame = cap.read()
                 if ret:
-                    img_crop = image_crop_opencv(frame)
-                    if img_crop != -1:
-                        print(img_crop)
+                    image_frame, image_crop = image_crop_opencv(frame)
+                    self.changePixmap.emit(image_frame)
 
+                    # if image_resize != -1:
+                    #
+                    #     if time.time() - timer >= 0.5:
+                    #         timer = time.time()
+                    if image_crop is not False:
+                        if time.time() - timer >= 0.2:
+                            timer = time.time()
+                            self.timer.emit(image_crop)
+
+                    if image_crop is False:
                         if time.time() - timer >= 0.5:
                             timer = time.time()
-                            self.timer.emit(img_crop)
+                            self.timer.emit(image_frame)
+
+
 
                         # cv2.rectangle(img_crop, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                        # convertToQtFormat = QImage(img_crop.data, img_crop.shape[1], img_crop.shape[0],
-                        #                            QImage.Format.Format_BGR888)
+
                         #
-                        # p = convertToQtFormat.scaled(224, 224, Qt.KeepAspectRatio)
-                        self.changePixmap.emit(img_crop)
+
 
                 if ret is False:
                     self.end_video.emit()
