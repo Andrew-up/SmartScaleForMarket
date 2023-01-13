@@ -56,7 +56,7 @@ def build_image_generator():
 
     data_augmentation = tf.keras.Sequential([
         # layers.RandomFlip("horizontal"),
-        layers.RandomRotation(0.25),
+        # layers.RandomRotation(0.25),
         # layers.RandomContrast(factor=0.1),
         layers.Resizing(img_height, img_width),
         # layers.CenterCrop(img_height, img_width),
@@ -121,33 +121,39 @@ def build_image_generator():
     model.add(Dropout(0.15))
     model.add(Flatten())
     model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.20))
+    model.add(Dropout(0.30))
     model.add(Dense(len_class_dataset, activation='softmax'))
 
     model.compile(loss='categorical_crossentropy',
                   # optimizer=keras.optimizers.Adam(),
-                  optimizer=keras.optimizers.Adam(0.0003),
+                  optimizer=keras.optimizers.Adam(0.0005),
                   metrics=['accuracy'])
 
-    callback_val_loss = tf.keras.callbacks.EarlyStopping(monitor="val_loss",
-                                                         mode="auto",
-                                                         patience=9)
+    # callback_val_loss = tf.keras.callbacks.EarlyStopping(monitor="val_loss",
+    #                                                      mode="auto",
+    #                                                      patience=15)
+    #
+    # callback_val_accuracy = tf.keras.callbacks.EarlyStopping(monitor="val_accuracy",
+    #                                                          mode="auto",
+    #                                                          patience=15)
 
-    callback_val_accuracy = tf.keras.callbacks.EarlyStopping(monitor="val_accuracy",
-                                                             mode="auto",
-                                                             patience=9)
+    best_res = tf.keras.callbacks.ModelCheckpoint(MODEL_CNN_PATH,
+                                                  save_best_only=True,
+                                                  monitor='val_loss',
+                                                  mode='auto',
+                                                  period=1)
 
     history = model.fit(train_dataset,
                         batch_size=batch_size,
                         epochs=50,
                         verbose=2,
                         validation_data=validation_dataset,
-                        callbacks=[callback_val_loss, callback_val_accuracy],
+                        callbacks=[ best_res],
                         )
 
 
     print("Сохранение модели")
-    model.save(MODEL_CNN_PATH)
+    # model.save(MODEL_CNN_PATH)
     print('Модель сохранена')
     # visualize_CNN_model(6, path_model + name_saved_model, class_names, train_dataset)
     plot_history(history)
